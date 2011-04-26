@@ -96,6 +96,7 @@ public class CompositionContext extends TemplateContext<String, Definition>
 
    public static CompositionContext peek()
    {
+      setupContextStack();
       if (!stack.get().isEmpty())
       {
          return stack.get().peek();
@@ -105,12 +106,22 @@ public class CompositionContext extends TemplateContext<String, Definition>
 
    public static CompositionContext push(final CompositionContext context)
    {
+      setupContextStack();
       return stack.get().push(context);
    }
 
    public static CompositionContext pop()
    {
+      setupContextStack();
       return stack.get().pop();
+   }
+
+   private static void setupContextStack()
+   {
+      if (stack.get() == null)
+      {
+         stack.set(new Stack<CompositionContext>());
+      }
    }
 
    public TemplateResource<?> getTemplateResource()
